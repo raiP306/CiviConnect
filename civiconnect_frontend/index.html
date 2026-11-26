@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CiviConnect - Report Civic Issues</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo" onclick="goTo('homeTop')">Civi<span>Connect</span></div>
+    <nav>
+      <a href="#" onclick="goTo('homeTop')">Home</a>
+      <a href="#" onclick="goTo('about')">About us</a>
+      <a href="#" onclick="goTo('contact')">Contact</a>
+      <a href="#" onclick="goTo('how')">How it works</a>
+    </nav>
+    <div class="nav-right">
+      <button id="authBtn" class="btn" onclick="authClick()">Login/Register</button>
+      <button id="logoutBtn" class="btn light hidden" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <div id="homeSection">
+    <section class="hero" id="homeTop">
+      <div class="hero-left">
+        <h1>Report Civic Issues,<br>Build Better Communities.</h1>
+        <p>Report local civic problems like potholes, garbage, streetlights, water leakage and track their status in real time.</p>
+        <div class="hero-btns">
+          <button class="btn big" onclick="reportIssue()">Report Issues</button>
+          <button class="btn big" onclick="document.getElementById('trackId').focus()">Track Complaint</button>
+        </div>
+
+        <div class="track-card">
+          <h2>Track Your Complaint</h2>
+          <div class="track-row">
+            <input type="text" id="trackId" placeholder="Enter Complaint ID" onkeydown="if(event.key==='Enter')trackComplaint()">
+            <button class="btn" onclick="trackComplaint()">Search</button>
+          </div>
+          <div id="trackResult"></div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <img src="hero.png" alt="Citizens reporting civic issues">
+      </div>
+    </section>
+
+    <section class="info" id="how">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div><b>1. Sign up</b><p>Create an account with your email and verify it.</p></div>
+        <div><b>2. Report</b><p>Register a complaint with details and photos of the problem.</p></div>
+        <div><b>3. Track</b><p>Check the live status with your Complaint ID and get an email confirmation.</p></div>
+      </div>
+    </section>
+
+    <section class="info alt" id="about">
+      <h2>About us</h2>
+      <p><h4><b>Welcome to CiviConnect</b></h4> A simple platform that connects citizens directly with solutions 
+        for everyday civic problems.From potholes and overflowing garbage to broken streetlights and other neighborhood issues, 
+        <b>CiviConnect</b> makes it quick and easy for residents to report what needs fixing. Our goal is to give every citizen an effortless 
+voice to help build cleaner, safer, and better-maintained communities—one report at a time. Report local 
+civic problems like potholes, garbage, streetlights, water leakage and track their status in real time.</p>
+    </section>
+
+    <section class="info" id="contact">
+      <h2>Contact</h2>
+      <p>Email: raipriyam123@gmail.com &nbsp;|&nbsp; Phone: +91 8496736434</p>
+    </section>
+  </div>
+
+  <!-- LOGIN -->
+  <section id="loginSection" class="box hidden">
+    <h2>Login</h2>
+    <label>Email</label>
+    <input type="email" id="loginEmail">
+    <label>Password</label>
+    <input type="password" id="loginPassword">
+    <button class="btn" onclick="login()">Login</button>
+    <p>Don't have an account? <a href="#" onclick="showSection('signupSection')">Sign up</a></p>
+    <p id="loginMsg" class="msg"></p>
+  </section>
+
+  <!-- SIGNUP -->
+  <section id="signupSection" class="box hidden">
+    <h2>Sign up</h2>
+    <label>Name</label>
+    <input type="text" id="signupName">
+    <label>Email</label>
+    <input type="email" id="signupEmail">
+    <label>Password</label>
+    <input type="password" id="signupPassword">
+    <button class="btn" onclick="signup()">Sign up</button>
+    <p>Already have an account? <a href="#" onclick="showSection('loginSection')">Login</a></p>
+    <p id="signupMsg" class="msg"></p>
+  </section>
+
+  <!-- VERIFY -->
+  <section id="verifySection" class="box hidden">
+    <h2>Verify your email</h2>
+    <p>Enter the code sent to your email.</p>
+    <label>Code</label>
+    <input type="text" id="verifyCode">
+    <button class="btn" onclick="verifyEmail()">Verify</button>
+    <p id="verifyMsg" class="msg"></p>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboardSection" class="dash hidden">
+    <div class="box">
+      <h2>Register a Complaint</h2>
+      <label>Title</label>
+      <input type="text" id="title">
+      <label>Category</label>
+      <select id="category">
+        <option>Road / Pothole</option>
+        <option>Water Supply</option>
+        <option>Electricity</option>
+        <option>Garbage / Sanitation</option>
+        <option>Street Light</option>
+        <option>Other</option>
+      </select>
+      <label>Location</label>
+      <input type="text" id="location">
+      <label>Description</label>
+      <textarea id="description" rows="4"></textarea>
+      <label>Photos (max 3)</label>
+      <input type="file" id="images" accept="image/*" multiple>
+      <button class="btn" onclick="submitComplaint()">Submit</button>
+      <p id="complaintMsg" class="msg"></p>
+    </div>
+
+    <div class="box">
+      <h2>My Complaints</h2>
+      <button class="btn" onclick="loadComplaints()">Refresh</button>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody id="complaintList"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
